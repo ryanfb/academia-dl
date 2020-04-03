@@ -22,6 +22,7 @@ ARGV.each do |academia_url|
   download_id = download_url.split('/')[-2]
   filename = "#{URI(academia_url).path.split('/').last}.pdf"
   url = "#{PREFIX}/#{download_id}/#{filename}"
+  $stderr.puts "Resolved download URL: #{url}"
   if File.exist?(filename)
     $stderr.puts "#{filename} already exists, skipping"
   else
