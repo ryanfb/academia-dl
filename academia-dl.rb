@@ -4,6 +4,7 @@ require 'nokogiri'
 require 'uri'
 require 'open-uri'
 require 'open_uri_redirections'
+require 'addressable/uri'
 
 REFERER = 'http://scholar.google.com'
 PREFIX = 'https://www.academia.edu/download'
@@ -12,7 +13,8 @@ OPEN_URI_OPTIONS = {"Referer" => REFERER, :allow_redirections => :all}
 ARGV.each do |academia_url|
   doc = nil
   begin
-    doc = Nokogiri::HTML(URI.open(academia_url))
+    uri = Addressable::URI.parse(academia_url).normalize.to_s
+    doc = Nokogiri::HTML(URI.open(uri))
   rescue OpenURI::HTTPError => e
     $stderr.puts e.inspect
     sleep(5)
@@ -20,7 +22,7 @@ ARGV.each do |academia_url|
   end
   download_url = doc.css('a.js-swp-download-button').first['href']
   download_id = download_url.split('/')[-2]
-  filename = "#{URI(academia_url).path.split('/').last}.pdf"
+  filename = "#{URI(uri).path.split('/').last[0..250]}.pdf"
   url = "#{PREFIX}/#{download_id}/#{filename}"
   $stderr.puts "Resolved download URL: #{url}"
   if File.exist?(filename)
