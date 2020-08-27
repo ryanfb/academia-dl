@@ -12,7 +12,7 @@ OPEN_URI_OPTIONS = {"Referer" => REFERER, :allow_redirections => :all}
 ARGV.each do |academia_url|
   doc = nil
   begin
-    doc = Nokogiri::HTML(open(academia_url))
+    doc = Nokogiri::HTML(URI.open(academia_url))
   rescue OpenURI::HTTPError => e
     $stderr.puts e.inspect
     sleep(5)
