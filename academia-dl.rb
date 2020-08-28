@@ -9,6 +9,7 @@ require 'addressable/uri'
 REFERER = 'http://scholar.google.com'
 PREFIX = 'https://www.academia.edu/download'
 OPEN_URI_OPTIONS = {"Referer" => REFERER, :allow_redirections => :all}
+MAX_RETRIES = 5
 
 ARGV.each do |academia_url|
   uri = Addressable::URI.parse(academia_url).normalize.to_s
@@ -17,12 +18,19 @@ ARGV.each do |academia_url|
   if File.exist?(filename)
     $stderr.puts "#{filename} already exists, skipping"
   else
+    retries = 0
     begin
       doc = Nokogiri::HTML(URI.open(uri))
     rescue OpenURI::HTTPError => e
       $stderr.puts e.inspect
       sleep(5)
-      retry
+      if retries < MAX_RETRIES
+        retries += 1
+        retry
+      else
+        $stderr.puts "Max retries (= #{MAX_RETRIES}) reached, exiting"
+        exit 1
+      end
     end
     download_url = doc.css('a.js-swp-download-button').first['href']
     download_id = download_url.split('/')[-2]
