@@ -18,6 +18,10 @@ ARGV.each do |academia_url|
   if File.exist?(filename)
     $stderr.puts "#{filename} already exists, skipping"
   else
+    if URI(uri).host.split('.')[-2..-1].join('.') != 'academia.edu'
+      $stderr.puts "URL host must be 'academia.edu', error with URL: #{academia_url}"
+      exit 1
+    end
     retries = 0
     begin
       doc = Nokogiri::HTML(URI.open(uri))
@@ -28,7 +32,7 @@ ARGV.each do |academia_url|
         retries += 1
         retry
       else
-        $stderr.puts "Max retries (= #{MAX_RETRIES}) reached, exiting"
+        $stderr.puts "Max retries (= #{MAX_RETRIES}) reached, exiting after trying to open URL: #{academia_url}"
         exit 1
       end
     end
