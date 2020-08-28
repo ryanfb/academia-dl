@@ -31,9 +31,9 @@ ARGV.each do |academia_url|
       doc = Nokogiri::HTML(URI.open(uri))
     rescue OpenURI::HTTPError => e
       $stderr.puts e.inspect
-      sleep(5)
+      retries += 1
       if retries < MAX_RETRIES
-        retries += 1
+        sleep(5)
         retry
       else
         $stderr.puts "Max retries (= #{MAX_RETRIES}) reached, exiting after trying to open URL: #{academia_url}"
