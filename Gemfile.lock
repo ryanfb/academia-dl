@@ -3,8 +3,8 @@ GEM
   specs:
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
-    mini_portile2 (2.5.0)
-    nokogiri (1.11.0)
+    mini_portile2 (2.5.1)
+    nokogiri (1.11.4)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     open_uri_redirections (0.2.1)
