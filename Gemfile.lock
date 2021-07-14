@@ -1,21 +1,21 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.7.0)
+    addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     mini_portile2 (2.5.1)
     nokogiri (1.11.4)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     open_uri_redirections (0.2.1)
-    public_suffix (4.0.5)
+    public_suffix (4.0.6)
     racc (1.5.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  addressable (~> 2.7)
+  addressable (~> 2.8)
   nokogiri
   open_uri_redirections
 
