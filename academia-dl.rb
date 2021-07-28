@@ -45,7 +45,8 @@ ARGV.each do |academia_url|
       download_id = download_url.split('/')[-2]
       url = "#{PREFIX}/#{download_id}/#{filename}"
       $stderr.puts "Resolved download URL: #{url}"
-      IO.copy_stream(open(url, OPEN_URI_OPTIONS), filename)
+      stream = URI.open(url, **OPEN_URI_OPTIONS)
+      IO.copy_stream(stream, filename)
       $stderr.puts "Downloaded #{filename}"
     rescue StandardError => e
       $stderr.puts "Error parsing/downloading file for URL #{url}: #{e.inspect}"
