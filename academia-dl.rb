@@ -41,8 +41,9 @@ ARGV.each do |academia_url|
       end
     end
     begin
-      download_url = doc.css('a.js-swp-download-button').first['href']
-      download_id = download_url.split('/')[-2]
+      doc_script = doc.css('script').find{|script| script.content.include?('[{"id":')}
+      download_id = doc_script.content.split('[{"id":')[1].split(',')[0]
+
       url = "#{PREFIX}/#{download_id}/#{filename}"
       $stderr.puts "Resolved download URL: #{url}"
       stream = URI.open(url, **OPEN_URI_OPTIONS)
@@ -50,6 +51,7 @@ ARGV.each do |academia_url|
       $stderr.puts "Downloaded #{filename}"
     rescue StandardError => e
       $stderr.puts "Error parsing/downloading file for URL #{url}: #{e.inspect}"
+      $stderr.puts e.backtrace
       exit 1
     end
   end
