@@ -10,4 +10,6 @@ RUN bundle install
 
 COPY . .
 
-CMD ["./academia-dl.rb"]
+VOLUME /data
+WORKDIR /data
+ENTRYPOINT ["bundle", "exec", "/usr/src/app/academia-dl.rb"]
